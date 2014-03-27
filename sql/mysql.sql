@@ -1,0 +1,9 @@
+CREATE TABLE member (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(140) NOT NULL,
+    email VARCHAR(140) NOT NULL,
+    created_at INT UNSIGNED NOT NULL,
+    updated_at INT UNSIGNED NOT NULL,
+    index (email)
+) ENGINE=InnoDB, DEFAULT CHAR SET=utf8; 
+
