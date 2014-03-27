@@ -8,11 +8,7 @@ my $conf = {
         namespace => 'Rainview',
     },
     'DBI' => {
-        connect_info => [
-            'dbi:SQLite:dbname=var/db.sqlite3', 
-            '', 
-            '',
-        ],
+        connect_info => [qw/dbi:mysql:rainview root/, undef],
     },
     
 };

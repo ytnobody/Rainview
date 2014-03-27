@@ -8,6 +8,7 @@ use Furl;
 use XML::XPath::Diver;
 use HTML::Tidy::libXML;
 use List::MoreUtils 'mesh';
+use Time::Piece;
 use Class::Accessor::Lite (
     rw => [qw[agent url tidy charset]],
     new => 0,
@@ -53,10 +54,34 @@ sub parse {
     my ($header, @recs) = $table->dive('//tr');
 
     my @res;
+
     my @fields = map {$_->text} $header->dive('//th');
+    for my $field (@fields) {
+        $field = 
+            $field =~ /^路線名/ ? 'route' :
+            $field =~ /^地名/ ? 'name' :
+            $field =~ /^時間雨量/ ? 'hourly_precip' :
+            $field =~ /^連続雨量/ ? 'long_precip' :
+            $field =~ /^観測日時/ ? 'report_time' :
+            undef
+        ;
+    }
+    @fields = grep {defined $_} @fields;
+
     for my $record (@recs) {
         my @cols = map {$_->text} $record->dive('//td');
         my %data = mesh(@fields, @cols);
+
+        for my $key (qw|long_precip hourly_precip|) {
+            $data{$key} = $data{$key} =~ /^[0-9]+$/ ? $data{$key} : undef;
+        } 
+
+        $data{report_time} = do {
+            my $report_time = $data{report_time} =~ s/年 /年0/r;
+            my $piece = Time::Piece->strptime($report_time, '%Y年%m月%d日 %H時%M分');
+            $piece->strftime('%Y-%m-%d %H:%M:%S');
+        };
+
         push @res, { %data };
     }
 

@@ -2,7 +2,6 @@ use strict;
 use Test::More;
 use Rainview::Crawler;
 use File::Slurp;
-use utf8;
 
 my $content = read_file('t/resource/kanto.html');
 
@@ -14,6 +13,8 @@ is scalar(@res), 82;
 
 my @fields = sort keys %{$res[0]};
 
-is_deeply \@fields, [qw[地名 時間雨量(mm)* 観測日時 路線名 連続雨量(mm)*]];
+is_deeply \@fields, [qw[hourly_precip long_precip name report_time route]];
+
+diag explain @res;
 
 done_testing;

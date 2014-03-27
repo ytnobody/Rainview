@@ -3,7 +3,9 @@ use strict;
 use warnings;
 use Data::Dumper ();
 use URI;
+use Otogiri;
 use Nephia::Incognito;
+use Time::Piece;
 use Nephia plugins => [
     'FillInForm',
     'FormValidator::Lite',
@@ -38,6 +40,19 @@ use Nephia plugins => [
 ];
 
 sub c () {Nephia::Incognito->unmask(__PACKAGE__)}
+
+__PACKAGE__->c->{dsl}{db} = sub {
+    my $c = __PACKAGE__->c;
+    my $db = $c->{db};
+    unless ($db) {
+        my $conf = $c->{config}{DBI};
+        $db = $c->{db} = Otogiri->new(%$conf);
+    }
+    $db;
+};
+
+
+__PACKAGE__->c->{dsl}{now} = sub {localtime};
 
 app {
     get  '/' => Nephia->call('C::Root#index');
