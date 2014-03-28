@@ -7,4 +7,5 @@
   <polyline points="230 5, 300 70, 300 250" fill="none" stroke="#009999" stroke-width="10" title="国道17号" />
   <polyline points="200 25, 105 25" fill="none" stroke="#0066cc" stroke-width="10" title="国道18号" />
   <polyline points="105 25, 40 25, 5 70, 5 200" fill="none" stroke="#00cc66" stroke-width="10" title="国道19号" />
+  <polyline points="5 200, 100 350, 350 350, 400 400" fill="none" stroke="#cc6600" stroke-width="10" title="国道20号" />
 </svg>
