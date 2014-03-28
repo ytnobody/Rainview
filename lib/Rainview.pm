@@ -56,8 +56,6 @@ __PACKAGE__->c->{dsl}{now} = sub {localtime};
 
 app {
     get  '/' => Nephia->call('C::Root#index');
-    get  '/api/member/create' => Nephia->call('C::API::Member#create');
-    get  '/api/member/:id' => Nephia->call('C::API::Member#fetch');
 };
 
 1;
