@@ -1,4 +1,5 @@
-APPROOT=$HOME/Rainview
+RAINVIEEW_APPROOT=$HOME/Rainview
+PLACK_ENV=real
 
-2 * * * * cd $APPROOT && ./script/env ./script/import_precip.pl 
+2 * * * * cd $RAINVIEW_APPROOT && ./script/env carton exec ./script/import_precip.pl 
 
