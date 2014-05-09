@@ -77,7 +77,7 @@ sub parse {
         } 
 
         $data{report_time} = do {
-            my $report_time = $data{report_time} =~ s/年 /年0/r;
+            my $report_time = $data{report_time} =~ s/ ([0-9]{1})(月|日|時|分)/sprintf("%02d",$1).$2/reg;
             my $piece = Time::Piece->strptime($report_time, '%Y年%m月%d日 %H時%M分');
             $piece->strftime('%Y-%m-%d %H:%M:%S');
         };
