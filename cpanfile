@@ -11,7 +11,6 @@ requires 'DBI' => 0;
 requires 'DBD::SQLite' => 0;
 requires 'Data::Page::Navigation' => 0;
 requires 'Otogiri' => 0;
-requires 'Nephia::Plugin::Otogiri' => 0;
 requires 'Nephia::Plugin::Dispatch' => 0.03;
 requires 'Nephia::Plugin::FillInForm' => 0;
 requires 'Nephia::Plugin::JSON' => 0.03;
