@@ -23,3 +23,5 @@ requires 'Furl' => 0;
 requires 'XML::XPath::Diver' => 0;
 requires 'HTML::Tidy::libXML' => 0;
 requires 'Class::Accessor::Lite' => 0;
+requires 'Server::Starter' => 0;
+requires 'Starlet' => 0;
