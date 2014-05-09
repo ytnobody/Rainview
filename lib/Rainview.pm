@@ -56,6 +56,7 @@ __PACKAGE__->c->{dsl}{now} = sub {localtime};
 
 app {
     get '/' => Nephia->call('C::Root#index');
+    get '/route/{id:[0-9]+}' => Nephia->call('C::Route#detail');
     get '/api/routes' => Nephia->call('C::API::Route#list');
     get '/api/route/{id:[0-9]+}' => Nephia->call('C::API::Route#detail');
     get '/api/point/rainy' => Nephia->call('C::API::Point#rainy');

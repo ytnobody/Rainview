@@ -18,6 +18,9 @@
   <div class="container">
   [% content %]
   </div>
+  <div class="container">
+    ※このサイトの一次情報は <a href="http://www.mlit.go.jp/road/roadinfo/">道路: 交通規制・道路気象 - 国土交通省</a> です。
+  </div>
 </body>
 </html>
 

@@ -1,3 +1,63 @@
 [% WRAPPER 'include/layout.tt' %]
+<div class="hero-unit">
+  <h1>Rainview</h1>
+  <h5>主要国道の現在の降水状況を大まかに可視化</h5>
+</div>
+<div class="container">
+  <h3>路線を選択</h3>
+  <table class="table table-striped table-bordered">
+    [% FOR route IN routes %]
+    [%   IF loop.count % 6 == 1 %]
+    [%     IF loop.count > 0 %]
+    </tr>
+    [%     END %]
+    <tr>
+    [%   END %]
+      <td><button class="btn btn-info" onclick="location.href='/route/[% route.id %]'">[% route.name %]</button></td>
+    [% END %]
+    </tr>
+  </table>
+</div>
+
+<div class="container">
+  <h3>現在の降水量が1mm以上の地点</h3>
+  <table class="table table-striped table-bordered">
+    <tr>
+      <th>路線名</th>
+      <th>地名</th>
+      <th>過去1時間の降水量(mm)</th>
+      <th>更新時刻</th>
+    </tr>
+  [% FOR point IN rainy_points %]
+    <tr>
+      <td>[% point.route.name %]</td>
+      <td>[% point.name %]</td>
+      <td>[% point.hourly_precip %]</td>
+      <td>[% point.updated_at %]</td>
+    </tr>
+  [% END %]
+  </table>
+</div>
+
+<div class="container">
+  <h3>連続した降水量が1mm以上の地点</h3>
+  <table class="table table-striped table-bordered">
+    <tr>
+      <th>路線名</th>
+      <th>地名</th>
+      <th>連続した降水量(mm)</th>
+      <th>更新時刻</th>
+    </tr>
+  [% FOR point IN wet_points %]
+    <tr>
+      <td>[% point.route.name %]</td>
+      <td>[% point.name %]</td>
+      <td>[% point.long_precip %]</td>
+      <td>[% point.updated_at %]</td>
+    </tr>
+  [% END %]
+  </table>
+</div>
+
 [% END %]
 
