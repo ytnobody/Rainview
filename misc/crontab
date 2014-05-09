@@ -1,0 +1,4 @@
+APPROOT=$HOME/Rainview
+
+2 * * * * cd $APPROOT && ./script/env ./script/import_precip.pl 
+
