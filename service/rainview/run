@@ -1,6 +1,7 @@
 #!/bin/sh
 
 export PLACK_ENV=real
+export HOME=/home/ytnobody
 export APPROOT=$HOME/Rainview
 
 cd $APPROOT
