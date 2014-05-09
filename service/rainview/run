@@ -1,0 +1,10 @@
+#!/bin/sh
+
+export PLACK_ENV=real
+export APPROOT=$HOME/Rainview
+
+cd $APPROOT
+ 
+exec 2>&1 
+exec ./script/env carton exec -- start_server --port=12001 -- plackup -R lib -R local -R config -R service -s Starlet --max-workers=8
+

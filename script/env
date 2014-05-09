@@ -1,0 +1,8 @@
+#!/bin/sh
+
+PERLROOT=$HOME/perls/perl-5.18
+PERL5LIB=$PERLROOT/lib
+PATH=$PERLROOT/bin:$PATH
+
+exec $@
+
