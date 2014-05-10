@@ -21,29 +21,41 @@ Rainview->run(%$config);
 my $c = Rainview->c;
 my $db = $c->db;
 
-my $crawler = Rainview::Crawler->new;
-$crawler->url('http://www.road.ktr.mlit.go.jp/info/uryo/all/all.html'); ## 関東・甲信の雨状況
+my @urls = qw|
+    http://its.cbr.mlit.go.jp/TkyDsp.exe?FNo=4&GNo=4&&
+    http://www.road.ktr.mlit.go.jp/info/uryo/all/all.html
+|;
 
-my @points = $crawler->crawl;
-my $routes = {};
+for my $url (@urls) {
+    crawl($url);
+}
 
-for my $point (@points) {
-    my $route_name = $point->{route};
-
-    $routes->{$route_name} ||= 
-        $db->single(route => {name => $route_name}) || 
-        $db->insert(route => {name => $route_name, created_at => $c->now->strftime('%Y-%m-%d %H:%M:%S')})
-    ;
-    my $route = $routes->{$route_name};
-
-    $point->{route_id} = $route->{id};
-    delete $point->{route};
-
-    my $cond = {name => delete $point->{name}};
-
-    my $res = $db->update(point => $point, $cond);
-    if ($res eq '0E0') {  ### レコード数がない
-        my $data = { %$point, %$cond, created_at => $c->now->strftime('%Y-%m-%d %H:%M:%S') };
-        $db->insert(point => $data);
+sub crawl {
+    my $url = shift;
+    my $crawler = Rainview::Crawler->new;
+    $crawler->url($url); 
+    
+    my @points = $crawler->crawl;
+    my $routes = {};
+    
+    for my $point (@points) {
+        my $route_name = $point->{route};
+    
+        $routes->{$route_name} ||= 
+            $db->single(route => {name => $route_name}) || 
+            $db->insert(route => {name => $route_name, created_at => $c->now->strftime('%Y-%m-%d %H:%M:%S')})
+        ;
+        my $route = $routes->{$route_name};
+    
+        $point->{route_id} = $route->{id};
+        delete $point->{route};
+    
+        my $cond = {name => delete $point->{name}};
+    
+        my $res = $db->update(point => $point, $cond);
+        if ($res eq '0E0') {  ### レコード数がない
+            my $data = { %$point, %$cond, created_at => $c->now->strftime('%Y-%m-%d %H:%M:%S') };
+            $db->insert(point => $data);
+        }
     }
 }

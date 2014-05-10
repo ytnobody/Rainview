@@ -54,27 +54,34 @@ sub parse {
     my ($header, @recs) = $table->dive('//tr');
 
     my @res;
+    my @fields = map {s/(<br>|\n|\r|\s)/ii/g; $_} map {$_->text} $header->dive('//th');
 
-    my @fields = map {$_->text} $header->dive('//th');
     for my $field (@fields) {
         $field = 
-            $field =~ /^路線名/ ? 'route' :
-            $field =~ /^地名/ ? 'name' :
+            $field =~ /路線名/ ? 'route' :
+            $field =~ /^(地名|観測地点)$/ ? 'name' :
             $field =~ /^時間雨量/ ? 'hourly_precip' :
             $field =~ /^連続雨量/ ? 'long_precip' :
             $field =~ /^観測日時/ ? 'report_time' :
-            undef
+            $field
         ;
     }
     @fields = grep {defined $_} @fields;
 
     for my $record (@recs) {
         my @cols = map {$_->text} $record->dive('//td');
+        next unless @cols;
+
         my %data = mesh(@fields, @cols);
 
         for my $key (qw|long_precip hourly_precip|) {
+            next unless defined $data{$key};
             $data{$key} = $data{$key} =~ /^[0-9]+$/ ? $data{$key} : undef;
         } 
+
+        next unless $data{route};
+        $data{route} =~ s/（現道）//;
+        $data{route} =~ tr/[０-９]/[0-9]/;
 
         $data{report_time} = do {
             my $report_time = $data{report_time} =~ s/ ([0-9]{1})(月|日|時|分)/sprintf("%02d",$1).$2/reg;
@@ -82,7 +89,9 @@ sub parse {
             $piece->strftime('%Y-%m-%d %H:%M:%S');
         };
 
-        push @res, { %data };
+        %data = ( map {($_ => $data{$_})} qw/route name hourly_precip long_precip report_time/ );
+
+        push @res, {%data};
     }
 
     return @res;
