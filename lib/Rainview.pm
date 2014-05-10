@@ -43,12 +43,8 @@ sub c () {Nephia::Incognito->unmask(__PACKAGE__)}
 
 __PACKAGE__->c->{dsl}{db} = sub {
     my $c = __PACKAGE__->c;
-    my $db = $c->{db};
-    unless ($db) {
-        my $conf = $c->{config}{DBI};
-        $db = $c->{db} = Otogiri->new(%$conf);
-    }
-    $db;
+    my $conf = $c->{config}{DBI};
+    Otogiri->new(%$conf);
 };
 
 
