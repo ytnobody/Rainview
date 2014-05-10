@@ -22,8 +22,9 @@ my $c = Rainview->c;
 my $db = $c->db;
 
 my @urls = qw|
-    http://its.cbr.mlit.go.jp/TkyDsp.exe?FNo=4&GNo=4&&
+    http://road.thr.mlit.go.jp/info/uryo/all.html
     http://www.road.ktr.mlit.go.jp/info/uryo/all/all.html
+    http://its.cbr.mlit.go.jp/TkyDsp.exe?FNo=4&GNo=4&&
 |;
 
 for my $url (@urls) {
