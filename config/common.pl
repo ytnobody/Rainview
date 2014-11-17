@@ -13,6 +13,7 @@
     },
     'DBI' => {
         connect_info => [qw/dbi:mysql:rainview root/, undef],
+        strict => 0,
     },
 };
 
