@@ -42,10 +42,11 @@ sub crawl {
     for my $point (@points) {
         my $route_name = $point->{route};
     
-        $routes->{$route_name} ||= 
-            $db->single(route => {name => $route_name}) || 
-            $db->insert(route => {name => $route_name, created_at => $c->now->strftime('%Y-%m-%d %H:%M:%S')})
-        ;
+        $routes->{$route_name} ||= $db->single(route => {name => $route_name});
+        unless ($routes->{$route_name}) {
+            $db->insert(route => {name => $route_name, created_at => $c->now->strftime('%Y-%m-%d %H:%M:%S')});
+            $routes->{$route_name} = $db->single(route => {name => $route_name});
+        }
         my $route = $routes->{$route_name};
     
         $point->{route_id} = $route->{id};
