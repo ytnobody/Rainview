@@ -44,7 +44,7 @@ sub crawl {
     
         $routes->{$route_name} ||= $db->single(route => {name => $route_name});
         unless ($routes->{$route_name}) {
-            my $route_id = $route_name =~ /([0-9]+)/;
+            my ($route_id) = $route_name =~ /([0-9]+)/;
             $db->insert(route => {name => $route_name, id => $route_id, created_at => $c->now->strftime('%Y-%m-%d %H:%M:%S')});
             $routes->{$route_name} = $db->single(route => {name => $route_name});
         }
